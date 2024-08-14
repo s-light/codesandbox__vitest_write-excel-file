@@ -88,8 +88,8 @@ export const Example = () => {
     //end
   );
 
-  async function handleDownloadExampleXLSX(event) {
-    console.log("handleDownloadExampleXLSX");
+  async function handleDownloadXLSX_wBlob(event) {
+    console.log("handleDownloadXLSX");
     console.log("data", data);
     console.log("myschema", myschema);
     const fileName = `data_test.xlsx`;
@@ -98,16 +98,18 @@ export const Example = () => {
       // fileName: fileName,
     });
     console.log("xlsxBlob", xlsxBlob, "\n", `fileName '${fileName}'`);
-    try {
-      saveAs(xlsxBlob, fileName);
-    } catch (error) {
-      console.log(error);
-    }
+    saveAs(xlsxBlob, fileName);
+  }
 
-    // var blob = new Blob(["Hello, world!"], {
-    //   type: "text/plain;charset=utf-8",
-    // });
-    // saveAs(blob, "downloaded.txt");
+  async function handleDownloadXLSX(event) {
+    console.log("handleDownloadXLSX");
+    console.log("data", data);
+    console.log("myschema", myschema);
+    const fileName = `data_test.xlsx`;
+    await writeXlsxFile(data, {
+      schema: myschema,
+      fileName: fileName,
+    });
   }
 
   const table = useMaterialReactTable({
@@ -148,12 +150,20 @@ export const Example = () => {
   //using MRT_Table instead of MaterialReactTable if we do not need any of the toolbar components or features
   return (
     <div>
+      <span>
+        the download / saveAs only works in stand-alone preview window.
+      </span>
       <Button
-        onClick={handleDownloadExampleXLSX}
+        onClick={handleDownloadXLSX_wBlob}
         startIcon={<FileDownloadRoundedIcon />}
       >
-        download table data as XLSX - this only works in stand-alone preview
-        window.
+        download table data as XLSX - with Blob
+      </Button>
+      <Button
+        onClick={handleDownloadXLSX}
+        startIcon={<FileDownloadRoundedIcon />}
+      >
+        download table data as XLSX
       </Button>
       <MRT_Table table={table} />
     </div>
