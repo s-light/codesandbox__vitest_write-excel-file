@@ -88,27 +88,26 @@ export const Example = () => {
     //end
   );
 
-  function handleDownloadExampleXLSX(event) {
+  async function handleDownloadExampleXLSX(event) {
     console.log("handleDownloadExampleXLSX");
-    // console.log("data", data);
-    // console.log("myschema", myschema);
-    // const fileName = `data_test.xlsx`;
-    // const xlsxBlob = await writeXlsxFile(data, {
-    //   schema: myschema,
-    // });
-    // console.log("xlsxBlob", xlsxBlob, "\n", `fileName '${fileName}'`);
-    // console.log("fsave.saveAs", fsave.saveAs);
-    // fsave.saveAs();
-    // try {
-    //   fsave.saveAs(xlsxBlob, fileName);
-    // } catch (error) {
-    //   console.log(error);
-    // }
-
-    var blob = new Blob(["Hello, world!"], {
-      type: "text/plain;charset=utf-8",
+    console.log("data", data);
+    console.log("myschema", myschema);
+    const fileName = `data_test.xlsx`;
+    const xlsxBlob = await writeXlsxFile(data, {
+      schema: myschema,
+      // fileName: fileName,
     });
-    saveAs(blob, "downloaded.txt");
+    console.log("xlsxBlob", xlsxBlob, "\n", `fileName '${fileName}'`);
+    try {
+      saveAs(xlsxBlob, fileName);
+    } catch (error) {
+      console.log(error);
+    }
+
+    // var blob = new Blob(["Hello, world!"], {
+    //   type: "text/plain;charset=utf-8",
+    // });
+    // saveAs(blob, "downloaded.txt");
   }
 
   const table = useMaterialReactTable({
@@ -143,9 +142,7 @@ export const Example = () => {
       },
     },
     renderCaption: ({ table }) =>
-      `Here is a table rendered with the lighter weight MRT_Table sub-component, rendering ${
-        table.getRowModel().rows.length
-      } rows.`,
+      `rendering ${table.getRowModel().rows.length} rows.`,
   });
 
   //using MRT_Table instead of MaterialReactTable if we do not need any of the toolbar components or features
@@ -155,7 +152,8 @@ export const Example = () => {
         onClick={handleDownloadExampleXLSX}
         startIcon={<FileDownloadRoundedIcon />}
       >
-        download table data as XLSX
+        download table data as XLSX - this only works in stand-alone preview
+        window.
       </Button>
       <MRT_Table table={table} />
     </div>
