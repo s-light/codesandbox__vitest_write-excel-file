@@ -1,173 +1,64 @@
-import { useMemo } from "react";
-import {
-  MRT_Table, //import alternative sub-component if we do not want toolbars
-  useMaterialReactTable,
-} from "material-react-table";
-
-import Button from "@mui/material/Button";
-import FileDownloadRoundedIcon from "@mui/icons-material/FileDownloadRounded";
+import * as React from "react";
+import { Button } from "@mui/material";
 
 import writeXlsxFile from "write-excel-file";
-//import * as fsave from "file-saver";
-import { saveAs } from "file-saver";
 
-const data = [
-  {
-    firstName: "Dylan",
-    lastName: "Murray",
-    address: "261 Erdman Ford",
-    city: "East Daphne",
-    state: "Kentucky",
-  },
-  {
-    firstName: "Raquel",
-    lastName: "Kohler",
-    address: "769 Dominic Grove",
-    city: "Columbus",
-    state: "Ohio",
-  },
-  {
-    firstName: "Ervin",
-    lastName: "Reinger",
-    address: "566 Brakus Inlet",
-    city: "South Linda",
-    state: "West Virginia",
-  },
-];
+export const MyExample = () => {
+  const exampleData = [
+    {
+      forename: "Diana",
+      surname: "Umlauft",
+      email: "Diana.Umlauft@gmail.com",
+    },
+    {
+      forename: "Jana",
+      surname: "Friedmann",
+      email: "Jana_Friedmann@gmail.com",
+    },
+  ];
 
-const myschema = [
-  {
-    column: "firstName",
-    type: String,
-    value: (row) => row.firstName,
-  },
-  {
-    column: "lastName",
-    type: String,
-    value: (row) => row.lastName,
-  },
-  {
-    column: "city",
-    type: String,
-    value: (row) => row.city,
-  },
-  /*{
-    column: "Date of Birth",
-    type: Date,
-    format: "mm/dd/yyyy",
-    value: (row) => row.dateOfBirth,
-  },*/
-];
+  const columnsDefinition = [
+    {
+      column: "forename",
+      value: (person) => person.forename,
+      type: String,
+      width: 15,
+    },
+    {
+      column: "surname",
+      value: (person) => person.surname,
+      type: String,
+      width: 15,
+    },
+    {
+      column: "email",
+      value: (person) => person.email,
+      type: String,
+      width: 30,
+    },
+  ];
 
-export const Example = () => {
-  const columns = useMemo(
-    //column definitions...
-    () => [
-      {
-        accessorKey: "firstName",
-        header: "First Name",
-      },
-      {
-        accessorKey: "lastName",
-        header: "Last Name",
-      },
-      {
-        accessorKey: "address",
-        header: "Address",
-      },
-      {
-        accessorKey: "city",
-        header: "City",
-      },
-      {
-        accessorKey: "state",
-        header: "State",
-      },
-    ],
-    []
-    //end
-  );
-
-  async function handleDownloadXLSX_wBlob(event) {
-    console.log("handleDownloadXLSX_wBlob");
-    //console.log("data", data);
-    //console.log("myschema", myschema);
-    const fileName = `data_test.xlsx`;
-    const xlsxBlob = await writeXlsxFile(data, {
-      schema: myschema,
-      // fileName: fileName,
-    });
-    console.log("xlsxBlob", xlsxBlob, "\n", `fileName '${fileName}'`);
-    saveAs(xlsxBlob, fileName);
+  async function handleDownloadExampleXLSX(event) {
+    console.log("handleDownloadExampleXLSX");
+    try {
+      const xlsxBlob = await writeXlsxFile(exampleData, {
+        schema: columnsDefinition,
+        // https://gitlab.com/catamphetamine/write-excel-file#browser
+        // when no fileName is given results in blob
+        fileName: `testFile.xlsx`,
+      });
+      //console.log("xlsxBlob", xlsxBlob);
+      // saveAs(xlsxBlob, `testFile.xlsx`);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-  async function handleDownloadXLSX(event) {
-    console.log("handleDownloadXLSX");
-    //console.log("data", data);
-    //console.log("myschema", myschema);
-    const fileName = `data_test.xlsx`;
-    await writeXlsxFile(data, {
-      schema: myschema,
-      fileName: fileName,
-    });
-  }
-
-  const table = useMaterialReactTable({
-    columns,
-    data, //data must be memoized or stable (useState, useMemo, defined outside of this component, etc.)
-    enableColumnActions: false,
-    enableColumnFilters: false,
-    enablePagination: false,
-    enableSorting: false,
-    mrtTheme: (theme) => ({
-      baseBackgroundColor: theme.palette.background.default, //change default background color
-    }),
-    muiTableBodyRowProps: { hover: false },
-    muiTableProps: {
-      sx: {
-        border: "1px solid rgba(81, 81, 81, .5)",
-        caption: {
-          captionSide: "top",
-        },
-      },
-    },
-    muiTableHeadCellProps: {
-      sx: {
-        border: "1px solid rgba(81, 81, 81, .5)",
-        fontStyle: "italic",
-        fontWeight: "normal",
-      },
-    },
-    muiTableBodyCellProps: {
-      sx: {
-        border: "1px solid rgba(81, 81, 81, .5)",
-      },
-    },
-    renderCaption: ({ table }) =>
-      `rendering ${table.getRowModel().rows.length} rows.`,
-  });
-
-  //using MRT_Table instead of MaterialReactTable if we do not need any of the toolbar components or features
   return (
-    <div>
-      <span>
-        the download / saveAs only works in stand-alone preview window.
-      </span>
-      <Button
-        onClick={handleDownloadXLSX_wBlob}
-        startIcon={<FileDownloadRoundedIcon />}
-      >
-        download table data as XLSX - with Blob
-      </Button>
-      {/* <Button
-        onClick={handleDownloadXLSX}
-        startIcon={<FileDownloadRoundedIcon />}
-      >
-        download table data as XLSX
-      </Button> */}
-      <MRT_Table table={table} />
-    </div>
+    <>
+      <Button onClick={handleDownloadExampleXLSX}>Download Example</Button>
+    </>
   );
 };
 
-export default Example;
+export default MyExample;

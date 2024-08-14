@@ -13,7 +13,10 @@ window.ResizeObserver = vi.fn().mockImplementation(() => ({
 }));
 
 // runs a cleanup beforeq each test case (e.g. clearing jsdom)
-beforeEach(() => {});
+beforeEach(() => {
+  // Mock URL.createObjectURL using vi.fn() and add it in your beforeach
+  global.URL.createObjectURL = vi.fn(() => "blob:mock-url");
+});
 
 // runs a cleanup after each test case (e.g. clearing jsdom)
 afterEach(() => {
