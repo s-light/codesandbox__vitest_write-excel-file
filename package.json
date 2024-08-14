@@ -7,6 +7,7 @@
     "dev": "vite --port 3001",
     "build": "vite build",
     "serve": "vite preview",
+    "test": "vitest",
     "start": "vite"
   },
   "dependencies": {
@@ -23,10 +24,16 @@
     "write-excel-file": "^2.0.5"
   },
   "devDependencies": {
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "^6.4.8",
+    "@testing-library/react": "^16.0.0",
+    "@testing-library/user-event": "^14.5.2",
     "@types/react": "^18.2.60",
     "@types/react-dom": "^18.2.19",
     "@vitejs/plugin-react": "^4.2.1",
+    "jsdom": "^24.1.1",
     "typescript": "^5.3.3",
-    "vite": "^5.1.4"
+    "vite": "^5.1.4",
+    "vitest": "^2.0.5"
   }
 }

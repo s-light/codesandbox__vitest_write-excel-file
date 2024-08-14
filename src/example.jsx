@@ -89,9 +89,9 @@ export const Example = () => {
   );
 
   async function handleDownloadXLSX_wBlob(event) {
-    console.log("handleDownloadXLSX");
-    console.log("data", data);
-    console.log("myschema", myschema);
+    console.log("handleDownloadXLSX_wBlob");
+    //console.log("data", data);
+    //console.log("myschema", myschema);
     const fileName = `data_test.xlsx`;
     const xlsxBlob = await writeXlsxFile(data, {
       schema: myschema,
@@ -103,8 +103,8 @@ export const Example = () => {
 
   async function handleDownloadXLSX(event) {
     console.log("handleDownloadXLSX");
-    console.log("data", data);
-    console.log("myschema", myschema);
+    //console.log("data", data);
+    //console.log("myschema", myschema);
     const fileName = `data_test.xlsx`;
     await writeXlsxFile(data, {
       schema: myschema,
@@ -159,12 +159,12 @@ export const Example = () => {
       >
         download table data as XLSX - with Blob
       </Button>
-      <Button
+      {/* <Button
         onClick={handleDownloadXLSX}
         startIcon={<FileDownloadRoundedIcon />}
       >
         download table data as XLSX
-      </Button>
+      </Button> */}
       <MRT_Table table={table} />
     </div>
   );
